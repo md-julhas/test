@@ -11,7 +11,7 @@ import { useAuthContext } from "../context/AuthContext"
 import logo from "../assets/logo.png"
 
 const Login = () => {
-  const [email, setEmail] = useState("julhas.mail.info@gmail.com")
+  const [email, setEmail] = useState("julhas.info@gmail.com")
   const [password, setPassword] = useState("ddddddddU2%")
   const [showPassword, setShowPassword] = useState(false)
 

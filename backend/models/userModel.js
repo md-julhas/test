@@ -28,11 +28,6 @@ const userSchema = new Schema(
     },
     image: {
       type: String,
-      required: true,
-    },
-    cloudinaryId: {
-      type: String,
-      required: true,
     },
     role: {
       type: String,
