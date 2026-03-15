@@ -27,26 +27,38 @@ app.use(limiter)
 
 // app.js
 
+// 1. Define allowed origins
 const allowedOrigins = [
-  "http://localhost:5173", // Local Vite
-  "https://test-three-rose-34.vercel.app", // Production Vercel
+  "http://localhost:5173", // Local Vite development
+  "https://test-rust-five-45.vercel.app", // Your production frontend
 ]
 
+// 2. Configure CORS with credentials support
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like mobile apps or curl requests)
+      // Allow requests with no origin (like mobile apps or Postman)
       if (!origin) return callback(null, true)
-      if (allowedOrigins.indexOf(origin) === -1) {
-        return callback(new Error("CORS policy violation"), false)
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error("Not allowed by CORS"))
       }
-      return callback(null, true)
     },
-    credentials: true, // Required for cookies
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // CRITICAL: This allows the browser to send/receive cookies
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+    ],
   }),
 )
+
+// 3. Trust Proxy (Required for Rate Limiting/Cookies on Render/Vercel)
+app.set("trust proxy", 1)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
