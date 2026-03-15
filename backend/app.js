@@ -25,6 +25,29 @@ const limiter = rateLimit({
 
 app.use(limiter)
 
+// app.js
+
+const allowedOrigins = [
+  "http://localhost:5173", // Local Vite
+  "https://test-three-rose-34.vercel.app", // Production Vercel
+]
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true)
+      if (allowedOrigins.indexOf(origin) === -1) {
+        return callback(new Error("CORS policy violation"), false)
+      }
+      return callback(null, true)
+    },
+    credentials: true, // Required for cookies
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+)
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(helmet())
