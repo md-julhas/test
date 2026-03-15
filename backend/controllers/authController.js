@@ -10,7 +10,7 @@ import sendEmailWithNodemailer from "../utils/sendEmailWithNodemailer.js"
 // Common cookie options
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
+  secure: true,
   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
 }
 
