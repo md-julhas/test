@@ -16,9 +16,15 @@ import employeeRouter from "./routes/employeeRouter.js"
 
 const app = express()
 
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   }),
+// )
 app.use(
   cors({
-    origin: "https://test-three-rose-34.vercel.app",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   }),
 )
