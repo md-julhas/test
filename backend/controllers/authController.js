@@ -7,7 +7,7 @@ import { successReponse } from "../utils/responseHandlers.js"
 import createjwtToken from "../utils/jsonwebtoken.js"
 import sendEmailWithNodemailer from "../utils/sendEmailWithNodemailer.js"
 
-// Common cookie options
+// Common cookie option
 const cookieOptions = {
   httpOnly: true,
   secure: true,
