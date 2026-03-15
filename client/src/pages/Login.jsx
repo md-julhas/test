@@ -29,9 +29,9 @@ const Login = () => {
     } catch (err) {
       const errMsg = err.response?.data?.message
       toast.error(errMsg)
-      if (errMsg.includes("banned")) {
+      if (errMsg?.includes("banned")) {
         navigate("/banned")
-      } else if (errMsg.includes("not verified")) {
+      } else if (errMsg?.includes("not verified")) {
         navigate("/send-verification-email", { state: { email } })
       } else {
         toast.error(errMsg)
