@@ -14,6 +14,8 @@ export const AuthContextProvider = ({ children }) => {
       setLoading(true)
       // This will call /auth/me, interceptor will refresh token if 401
       const res = await axios.get("http://localhost:8000/api/auth/me")
+      console.log(res)
+
       setUser(res.data.payload)
     } catch (err) {
       setUser(null)
