@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import api from "../api/axios"
+import axios from "axios"
 
 const AuthContext = createContext()
 
@@ -11,20 +12,13 @@ export const AuthContextProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       setLoading(true)
-      const res = await api.get("/auth/me")
+      // This will call /auth/me, interceptor will refresh token if 401
+      const res = await axios.get("http://localhost:8000/api/auth/me")
       setUser(res.data.payload)
-    } catch {
-      try {
-        await api.get("/auth/refresh-token")
-
-        const res = await api.get("/auth/me")
-
-        setUser(res.data.payload)
-      } catch {
-        setUser(null)
-      }
+    } catch (err) {
+      setUser(null)
     } finally {
-      setLoading(false)
+      setLoading(false) // ✅ important: stop loading no matter what
     }
   }
 
