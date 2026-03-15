@@ -10,7 +10,7 @@ import sendEmailWithNodemailer from "../utils/sendEmailWithNodemailer.js"
 // Common cookie options
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production", 
+  secure: process.env.NODE_ENV === "production",
   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
 }
 
@@ -46,7 +46,7 @@ const handleLogin = async (req, res, next) => {
     const accessToken = createjwtToken(
       userPayload,
       process.env.JWT_SECRET_KEY,
-      "1m",
+      "10m",
     )
     const refreshToken = createjwtToken(
       userPayload,
@@ -57,7 +57,7 @@ const handleLogin = async (req, res, next) => {
     // Set cookies
     res.cookie("accessToken", accessToken, {
       ...cookieOptions,
-      maxAge: 1 * 60 * 1000,
+      maxAge: 10 * 60 * 1000,
     }) // 10 min
     res.cookie("refreshToken", refreshToken, {
       ...cookieOptions,

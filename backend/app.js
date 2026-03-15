@@ -25,23 +25,6 @@ const limiter = rateLimit({
 
 app.use(limiter)
 
-const allowedOrigins = [
-  "http://localhost:5173", // no trailing slash
-  "https://test-rust-five-45.vercel.app",
-]
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true) // allow non-browser requests
-      if (allowedOrigins.indexOf(origin) === -1) {
-        return callback(new Error("Not allowed by CORS"), false)
-      }
-      return callback(null, true)
-    },
-    credentials: true, // allow cookies
-  }),
-)
-
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(helmet())
