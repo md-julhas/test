@@ -16,15 +16,6 @@ import employeeRouter from "./routes/employeeRouter.js"
 
 const app = express()
 
-// app.set("trust proxy", 2)
-const limiter = rateLimit({
-  windowMs: 2 * 60 * 1000,
-  max: 500,
-  message: "To many req from this IP, please try again later",
-})
-
-app.use(limiter)
-
 // app.js
 
 // 1. Define allowed origins
@@ -59,6 +50,15 @@ app.use(
 
 // 3. Trust Proxy (Required for Rate Limiting/Cookies on Render/Vercel)
 app.set("trust proxy", 1)
+
+// app.set("trust proxy", 2)
+const limiter = rateLimit({
+  windowMs: 2 * 60 * 1000,
+  max: 1000,
+  message: "To many req from this IP, please try again later",
+})
+
+app.use(limiter)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
