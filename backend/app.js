@@ -16,40 +16,12 @@ import employeeRouter from "./routes/employeeRouter.js"
 
 const app = express()
 
-// app.js
-
-// 1. Define allowed origins
-const allowedOrigins = [
-  "http://localhost:5173", // Local Vite development
-  "https://test-three-rose-34.vercel.app", // Your production frontend
-]
-
-// 2. Configure CORS with credentials support
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or Postman)
-      if (!origin) return callback(null, true)
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true)
-      } else {
-        callback(new Error("Not allowed by CORS"))
-      }
-    },
-    credentials: true, // CRITICAL: This allows the browser to send/receive cookies
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-Requested-With",
-      "Accept",
-    ],
+    origin: "https://test-three-rose-34.vercel.app",
+    credentials: true,
   }),
 )
-
-// 3. Trust Proxy (Required for Rate Limiting/Cookies on Render/Vercel)
-app.set("trust proxy", 1)
 
 // app.set("trust proxy", 2)
 const limiter = rateLimit({
@@ -58,7 +30,7 @@ const limiter = rateLimit({
   message: "To many req from this IP, please try again later",
 })
 
-app.use(limiter)
+// app.use(limiter)
 app.use(helmet())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
