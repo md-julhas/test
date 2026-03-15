@@ -1,43 +1,31 @@
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true, // very important for cookies
 })
 
-// Add interceptor to handle token refresh
-
+// RESPONSE INTERCEPTOR
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
+    console.log("Interceptor called", error.response?.status) // <- debug
+
     const originalRequest = error.config
-
-    const isLoginRequest = originalRequest.url.includes("/auth/login")
-    const isRefreshRequest = originalRequest.url.includes("/auth/refresh-token")
-    const isVerifyEmailRequest =
-      originalRequest.url.includes("/auth/verify-email")
-
-    if (isLoginRequest || isRefreshRequest || isVerifyEmailRequest) {
-      return Promise.reject(error)
-    }
-
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      console.log("401 detected, trying refresh token")
       originalRequest._retry = true
       try {
-        await api.get("/auth/refresh-token")
+        const res = await api.get("/auth/refresh-token")
+        console.log("Refresh token response:", res.data)
         return api(originalRequest)
-      } catch (refreshError) {
-        console.error("Refresh token expired")
-        return Promise.reject(refreshError)
+      } catch (err) {
+        console.error("Refresh token failed:", err.response?.data || err)
+        window.location.href = "/login"
       }
     }
-
     return Promise.reject(error)
-  }
+  },
 )
 
 export default api

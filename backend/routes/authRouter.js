@@ -6,6 +6,7 @@ import {
   handleLogout,
   handleSendVerificationEmail,
   handleVerifyEmail,
+  handleGetMe,
 } from "../controllers/authController.js"
 import { userLoginValidatonRules } from "../validators/validationRules.js"
 import runValidation from "../validators/validationRequest.js"
@@ -24,15 +25,16 @@ authRouter.post(
   userLoginValidatonRules,
   runValidation,
   isLoggedOut,
-  handleLogin
+  handleLogin,
 )
 authRouter.post("/logout", isLoggedIn, handleLogout)
 authRouter.get("/refresh-token", handleRefreshToken)
 authRouter.post(
   "/send-verification-email",
   sendEmailLimiter,
-  handleSendVerificationEmail
+  handleSendVerificationEmail,
 )
+authRouter.get("/me", isLoggedIn, handleGetMe)
 authRouter.get("/verify-email/:token", handleVerifyEmail)
 
 export default authRouter
