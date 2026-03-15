@@ -21,7 +21,7 @@ const app = express()
 // 1. Define allowed origins
 const allowedOrigins = [
   "http://localhost:5173", // Local Vite development
-  "https://test-rust-five-45.vercel.app", // Your production frontend
+  "https://test-three-rose-34.vercel.app", // Your production frontend
 ]
 
 // 2. Configure CORS with credentials support
